@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 '''Converts sequence of images to compact PDF while removing speckles,
 bleedthrough, etc.
@@ -208,10 +208,6 @@ def get_argument_parser():
     parser.add_argument('-b', dest='basename', metavar='BASENAME',
                         default='page',
                         help='output PNG filename base' + show_default)
-
-    parser.add_argument('-o', dest='pdfname', metavar='PDF',
-                        default='output.pdf',
-                        help='output PDF filename' + show_default)
 
     parser.add_argument('-v', dest='value_threshold', metavar='PERCENT',
                         type=percent, default='25',
@@ -500,34 +496,6 @@ their samples together into one large array.
 
 ######################################################################
 
-def emit_pdf(outputs, options):
-
-    '''Runs the PDF conversion command to generate the PDF.'''
-
-    cmd = options.pdf_cmd
-    cmd = cmd.replace('%o', options.pdfname)
-    if len(outputs) > 2:
-        cmd_print = cmd.replace('%i', ' '.join(outputs[:2] + ['...']))
-    else:
-        cmd_print = cmd.replace('%i', ' '.join(outputs))
-    cmd = cmd.replace('%i', ' '.join(outputs))
-
-    if not options.quiet:
-        print('running PDF command "{}"...'.format(cmd_print))
-
-    try:
-        result = subprocess.call(shlex.split(cmd))
-    except OSError:
-        result = -1
-
-    if result == 0:
-        if not options.quiet:
-            print('  wrote', options.pdfname)
-    else:
-        sys.stderr.write('warning: PDF command failed\n')
-
-######################################################################
-
 def notescan_main(options):
 
     '''Main function for this program when run as script.'''
@@ -575,7 +543,7 @@ def notescan_main(options):
         if not options.quiet:
             print('  done\n')
 
-    emit_pdf(outputs, options)
+    #emit_pdf(outputs, options)
 
 ######################################################################
 
